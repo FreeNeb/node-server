@@ -17,7 +17,7 @@ var globalParams = {
 var g_params = {
     from: 'n1Vy87bKQk8eFzpQvdXDZJxwvyBgAyV3kya',
     to: contractAddress,
-    value: Utils.toBigNumber(0),
+    value: nebulas.Unit.toBasic(Utils.toBigNumber(0), "nas"),
     gasPrice: Utils.toBigNumber(1000000),
     gasLimit: Utils.toBigNumber(200000),
     contract: {}
@@ -40,13 +40,10 @@ var callContract = function(params) {
         var gTx = new nebulas.Transaction(globalParams.chainId,
         globalParams.account,params.to, params.value, params.nonce, params.gasPrice, params.gasLimit, params.contract);
 
-        console.log(gTx);
-
         gTx.signTransaction();
+        var rawTx = gTx.toProtoString();
 
-        console.log(gTx);
-
-        neb.api.sendRawTransaction(gTx.toProtoString()).then(function (resp) {
+        neb.api.sendRawTransaction(rawTx).then(function (resp) {
             console.log(JSON.stringify(resp));
         })
         .catch(function (err) {
@@ -61,8 +58,6 @@ var onUnlockFile = function(fileJson, account, password, callback) {
         fromAddr = account.getAddressString();
         account.fromKey(fileJson, password);
         globalParams.account = account;
-        console.log(globalParams.account);
-        console.log(account.getAddressString());
 
         neb.api.gasPrice()
             .then(function (resp) {
@@ -91,27 +86,29 @@ var handle = httpserver.handle;
 
 var bzHandle = {
     createGame: function(arg) {
-        var contract = {function: "createGame", args: [arg.id, arg.start, arg.end]};
-        console.log(contract);
+        var funcArgs = [arg.id, arg.start, arg.end];
+        var contract = {function: "createGame", args: JSON.stringify(funcArgs)};
         var params = fromGParam();
         params.contract = contract;
         callContract(params);
     },
     gameStart: function(arg) {
-        var contract = {function: "gameStart", args: [arg.id, arg.index]};
+        var funcArgs = [arg.id, arg.index];
+        var contract = {function: "gameStart", args: JSON.stringify(funcArgs)};
         var params = fromGParam();
         params.contract = contract;
         callContract(params);
 
     },
     gameEnd: function(arg) {
-        var contract = {function: "gameEnd", args: [arg.id, arg.index]};
+        var funcArgs = [arg.id, arg.index];
+        var contract = {function: "gameEnd", args: JSON.stringify(funcArgs)};
         var params = fromGParam();
         params.contract = contract;
         callContract(params);
     },
     balanceOf: function(arg) {
-        var contract = {function: "balanceOf", args: []};
+        var contract = {function: "balanceOf", args: ""};
         var params = fromGParam();
         params.contract = contract;
         callContract(params);
