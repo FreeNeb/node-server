@@ -90,12 +90,14 @@ var bzHandle = {
         var contract = {function: "createGame", args: JSON.stringify(funcArgs)};
         var params = fromGParam();
         params.contract = contract;
+        params.to = arg.to || params.to;
         callContract(params);
     },
     gameStart: function(arg) {
         var funcArgs = [arg.id, arg.index];
         var contract = {function: "gameStart", args: JSON.stringify(funcArgs)};
         var params = fromGParam();
+        params.to = arg.to || params.to;
         params.contract = contract;
         callContract(params);
 
@@ -104,12 +106,14 @@ var bzHandle = {
         var funcArgs = [arg.id, arg.index];
         var contract = {function: "gameEnd", args: JSON.stringify(funcArgs)};
         var params = fromGParam();
+        params.to = arg.to || params.to;
         params.contract = contract;
         callContract(params);
     },
     balanceOf: function(arg) {
         var contract = {function: "balanceOf", args: ""};
         var params = fromGParam();
+        params.to = arg.to || params.to;
         params.contract = contract;
         callContract(params);
     }
@@ -121,16 +125,17 @@ handle["/callFunc"] = function (query, response) {
     var func = queryObj["func"];
     var arg = queryObj["arg"];
 
+    var text = "success";
     try {
         arg = JSON.parse(arg);
         bzHandle[func](arg);
     } catch(e) {
-        var text = e.message;
-        console.log(text); 
-        response.writeHead(200, {"Content-Type": "text/plain"}); 
-        response.write(text); 
-        response.end(); 
+        text = e.message;
     }
+    console.log(text); 
+    response.writeHead(200, {"Content-Type": "text/plain"}); 
+    response.write(text); 
+    response.end(); 
 };
 
 var startHttpServer = function() {
