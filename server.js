@@ -116,6 +116,14 @@ var bzHandle = {
         params.to = arg.to || params.to;
         params.contract = contract;
         callContract(params);
+    },
+    addUsers: function(arg) {
+        var funcArgs = [arg.users];
+        var contract = {function: "addUsers", args: JSON.stringify(users)};
+        var params = fromGParam();
+        params.to = arg.to || params.to;
+        params.contract = contract;
+        callContract(params);
     }
 };
 
