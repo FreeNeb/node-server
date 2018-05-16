@@ -1,6 +1,6 @@
 "use strict";
 
-var contractAddress = "n1jFFpgMsLXSEBhSAvo9JgL1M19QT3rLqyN";
+var contractAddress = "n21c1ZPpvK5EoxPL7vRyV86yGqH9oEG7vNB";
 
 var nebulas = require("nebulas"),
     Account = nebulas.Account,
@@ -8,14 +8,14 @@ var nebulas = require("nebulas"),
     neb = new nebulas.Neb();
 // https://github.com/nebulasio/nebPay
 // var NebPay = require("./lib/nebpay.js"), nebPay = new NebPay();
-neb.setRequest(new nebulas.HttpRequest("https://testnet.nebulas.io"));
+neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
 
 var globalParams = {
-    chainId: 1001,
+    chainId: 1,
     account: ''
 };
 var g_params = {
-    from: 'n1Vy87bKQk8eFzpQvdXDZJxwvyBgAyV3kya',
+    from: 'n1W1xEUAU3QK4rMZqq6mGBRVcd1pS9T4FZH',
     to: contractAddress,
     value: nebulas.Unit.toBasic(Utils.toBigNumber(0), "nas"),
     gasPrice: Utils.toBigNumber(1000000),
@@ -31,7 +31,8 @@ var fromGParam = function() {
     return ret;
 }
 
-var g_filejson = {"version":4,"id":"330eb78f-02d9-44ba-8b25-3c3412eeac5f","address":"n1Vy87bKQk8eFzpQvdXDZJxwvyBgAyV3kya","crypto":{"ciphertext":"05fc1483b39b37f86f6ef46cc14025f6780ea9692241eddc90ed8f50201425ec","cipherparams":{"iv":"eceb179376509c6f5ba1961e2540b230"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"788bb3c94c2db544d9169ee4bfab0ac18927ca8ff6b58c6b54664770f20c7a51","n":4096,"r":8,"p":1},"mac":"0f5ce8f02a8da4d48c70e2b029888955fd3569b5e5aec08bf97fd1fad7c16bfd","machash":"sha3256"}};
+// var g_filejson = {"version":4,"id":"330eb78f-02d9-44ba-8b25-3c3412eeac5f","address":"n1Vy87bKQk8eFzpQvdXDZJxwvyBgAyV3kya","crypto":{"ciphertext":"05fc1483b39b37f86f6ef46cc14025f6780ea9692241eddc90ed8f50201425ec","cipherparams":{"iv":"eceb179376509c6f5ba1961e2540b230"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"788bb3c94c2db544d9169ee4bfab0ac18927ca8ff6b58c6b54664770f20c7a51","n":4096,"r":8,"p":1},"mac":"0f5ce8f02a8da4d48c70e2b029888955fd3569b5e5aec08bf97fd1fad7c16bfd","machash":"sha3256"}};
+var g_filejson = {"version":4,"id":"5ec90523-fed1-4a1d-a195-1abd5d87b4cb","address":"n1W1xEUAU3QK4rMZqq6mGBRVcd1pS9T4FZH","crypto":{"ciphertext":"bdd4cdb88bd79dcc1ab90e27126941ce950b701b5bc9e35db77295b0f4af069e","cipherparams":{"iv":"e14477fca298a3ff3db395ec331c19b4"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"e8c9ec6f9dd63052037ff228906efa1954dca5204935579e296b40b98b7c9e06","n":4096,"r":8,"p":1},"mac":"cfb9899a031800f1e3c30afa84310b4ab77409102c85782e2260c6aedf5484db","machash":"sha3256"}};
 var g_account = Account.fromAddress(g_filejson.address);
 
 var callContract = function(params) {
@@ -150,4 +151,4 @@ var startHttpServer = function() {
     httpserver.server.start(httpserver.router.route, handle, 8888);
 }
 
-onUnlockFile(g_filejson, g_account, "321321321", startHttpServer);
+onUnlockFile(g_filejson, g_account, "sdzrjsywgx@1215", startHttpServer);
