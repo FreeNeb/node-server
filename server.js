@@ -86,6 +86,7 @@ var querystring = require("querystring");
 var handle = httpserver.handle;
 
 var bzHandle = {
+    _teleUsers: [],
     createGame: function(arg) {
         var funcArgs = [arg.id, arg.start, arg.end];
         var contract = {function: "createGame", args: JSON.stringify(funcArgs)};
@@ -119,8 +120,34 @@ var bzHandle = {
         callContract(params);
     },
     addUsers: function(arg) {
-        var funcArgs = [arg.users];
-        var contract = {function: "addUsers", args: JSON.stringify(users)};
+        var user = {uid: arg.uid, uname: arg.uname}
+        this._teleUsers.push(user);
+        if (this._teleUsers.length < 100) {
+
+        } else {
+            var temp = [], funcArgs = [];
+            for (var i = 0; i < this._teleUsers.length; ++i) {
+                temp.push(this._teleUsers[i]);
+            }
+            funcArgs.push(temp);
+            var contract = {function: "addUsers", args: JSON.stringify(funcArgs)};
+            var params = fromGParam();
+            params.to = arg.to || params.to;
+            params.contract = contract;
+            callContract(params);
+        }
+    },
+    rewardTo: function(arg) {
+        var funcArgs = [arg.wallet, arg.value];
+        var contract = {function: "rewardTo", args: JSON.stringify(funcArgs)};
+        var params = fromGParam();
+        params.to = arg.to || params.to;
+        params.contract = contract;
+        callContract(params);
+    },
+    reward4Rand: function(arg) {
+        var funcArgs = [arg.wallet, arg.rank, arg.value];
+        var contract = {function: "reward4Rank", args: JSON.stringify(funcArgs)};
         var params = fromGParam();
         params.to = arg.to || params.to;
         params.contract = contract;
