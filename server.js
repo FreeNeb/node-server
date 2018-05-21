@@ -118,7 +118,7 @@ var bzHandle = {
         callContract(params);
     },
     createRewardInfo: function(arg) {
-        var funcArgs = [arg.id, arg.type,arg.desc];
+        var funcArgs = [arg.from,arg.value, arg.type,arg.desc];
         var contract = {function: "createRewardInfo", args: JSON.stringify(funcArgs)};
         var params = fromGParam();
         params.to = arg.to || params.to;
